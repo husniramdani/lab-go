@@ -1,9 +1,11 @@
-// A.20 Funsi variadic 
-// A.21 Funsi Closure - anonymouse function
+// A.20 Fungsi variadic 
+// A.21 Fungsi Closure - anonymouse function
+// A.22 Fungsi sebagai parameter
 package main
 
 import (
   "fmt"
+  "strings"
 )
 
 func main(){
@@ -33,6 +35,7 @@ func main(){
   var min, max = getMinMax(numbers2)
   fmt.Printf("Data : %v\nmin : %v\nmax : %v\n", numbers2, min, max);
 
+  fmt.Println("\n")
   // IIFE (Immediately-Invoked Function Expression)
   var numbers3 = []int{2,3,0,4,3,2,0,4,2,0,3}
   var newNumbers3 = func(min int) []int {
@@ -48,6 +51,7 @@ func main(){
   fmt.Println("Original numbers :", numbers3)
   fmt.Println("Filtered number :", newNumbers3)
 
+  fmt.Println("\n")
   // call closure as return
   var max4 = 3
   var numbers4 = []int{2,3,0,4,3,2,0,4,2,0,3}
@@ -59,6 +63,23 @@ func main(){
 
   fmt.Println("found \t:", howMany)    // 9
   fmt.Println("value \t:", theNumbers) // [2 3 0 3 2 0 2 0 3]
+
+  fmt.Println("\n")
+  // Fungsi sebagai parameter
+  var data5 = []string{"wick", "jason", "ethan"}
+  var dataContainsO = filter(data5, func(each string) bool {
+    return strings.Contains(each, "o")
+  })
+  var dataLength5 = filter(data5, func(each string) bool {
+    return len(each) == 5
+  })
+
+  fmt.Println("data asli \t:", data5)
+  // data asli : [wick jason ethan]
+  fmt.Println("filter ada huruf \"o\"\t:", dataContainsO)
+  // filter ada huruf "o" : [json]
+  fmt.Println("filter jumlah huruf \"5\"\t:", dataLength5)
+
 }
 
 func calculate(numbers ...int) float64 {
@@ -85,3 +106,18 @@ func findMax(numbers []int, max int) (int, func() []int){
   }
   return len(res), getNumbers
 }
+
+type FilterCallback func(string) bool
+
+// Fungsi sebagai parameter
+func filter(data []string, callback FilterCallback) []string {
+  var result []string
+  for _, each := range data {
+    if filtered := callback(each); filtered {
+      result = append(result, each)
+    }
+  }
+  return result
+}
+
+
